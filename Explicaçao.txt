@@ -1,0 +1,22 @@
+backend
+│
+├ controllers
+│   └ produtosController.js
+│
+├ database
+│   └ connection.js
+│
+├ routes
+│   └ produtosRoutes.js
+│
+└ server.js
+
+Pense nisso como uma cozinha de restaurante.
+
+Cliente → Garçom → Cozinheiro → Estoque
+
+No backend acontece algo parecido.
+
+Cliente → Routes → Controllers → Database
+
+Agora vamos entender cada arquivo.
