@@ -11,6 +11,25 @@ export const adicionarCarrinho = (req, res)=>{
     })
 }
 
+export const atualizarQuantidade = (req, res)=>{
+    const { id } = req.params;
+    const { quantidade } = req.body;
+
+    if(!quantidade || quantidade<= 0){
+        return res.status(400).json({ erro: "Quantidade invalida"});
+    }
+    const sql = 'UPDATE carrinho_itens SET quantidade = ? WHERE id = ?'
+    connection.query(sql, [quantidade, id], (err, result)=>{
+        if(err){
+            return res.status(500).json({ erro: "Erro ao atualizar quantidade"})
+        }
+        if(result.affectedRows === 0){
+            return res.status(400).json({ erro: "Item não encontrado"})
+        }
+        res.json({ mensagem: "Quantidade atualizada com sucesso"})
+    })
+}
+
 export const verCarrinho = (req, res)=>{
     const sql = `SELECT
     produtos.nome,
@@ -30,3 +49,20 @@ export const verCarrinho = (req, res)=>{
         res.json(results);
     })
 }
+
+export const removerItemCarrinho = (req, res)=>{
+    const { id } = req.params;
+    const sql = 'DELETE FROM carrinho_itens WHERE id = ?'
+
+    connection.query(sql, [id], (err, result)=>{
+        if(err){
+            console.log(err)
+            return res.status(500).json({ error: "Erro ao remover item"});
+        }
+        if(result.affectedRows === 0){
+            return res.status(404).json({ erro: "Item não encontrado"});
+        }
+        res.json({ mensagem: "Item removido do carrinho"});
+    });
+}
+
